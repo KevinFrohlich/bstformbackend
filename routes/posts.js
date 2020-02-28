@@ -7,7 +7,12 @@ const authService = require("../services/auth");
 router.get("/", function(req, res, next) {
   models.posts
     .findAll({
-      where: { Deleted: false }
+      where: { Deleted: false },
+      defaults: {
+        PostId: req.body.PostId,
+        PostTitle: req.body.PostTitle,
+        PostBody: req.body.PostBody
+      }
     })
     .then(results => res.send(JSON.stringify({ posts: results })));
 });
@@ -21,8 +26,8 @@ router.post("/", function(req, res, next) {
         UserId: UserId
       },
       defaults: {
-        PostTitle: req.body.title,
-        PostBody: req.body.body
+        PostTitle: req.body.PostTitle,
+        PostBody: req.body.PostBody
       }
     })
     .spread(function(result, created) {
