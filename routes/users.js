@@ -88,6 +88,29 @@ router.get("/profile", function(req, res, next) {
   }
 });
 
+router.post("/profile", function(req, res, next) {
+  models.users
+    .findOrCreate({
+      where: {
+        UserId: req.body.UserId
+      },
+      defaults: {
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
+        Username: req.body.Username,
+        Email: req.body.Email,
+        Password: authService.hashPassword(req.body.Password)
+      }
+    })
+    .spread(function(result, created) {
+      if (created) {
+        res.send(JSON.stringify("User successfully created"));
+      } else {
+        res.send(JSON.stringify("This user already exists"));
+      }
+    });
+});
+
 /*Establish whether the user has administrative privileges to access certain pages*/
 router.get("/admin", function(req, res, next) {
   let token = req.cookies.jwt;
