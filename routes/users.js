@@ -3,6 +3,14 @@ const router = express.Router();
 const models = require("../models");
 const authService = require("../services/auth");
 
+// router.get(
+//   "/getUser",
+//   authService.verifyUser("jwt", { session: false }),
+//   (req, res) => {
+//     res.send(req.user);
+//   }
+// );
+
 /* GET users listing. */
 router.get("/", function(req, res, next) {
   res.send(JSON.stringify("respond with a resource"));
